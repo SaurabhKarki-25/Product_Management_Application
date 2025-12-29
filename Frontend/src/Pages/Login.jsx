@@ -9,7 +9,6 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  // Prevent access to login if already logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -24,20 +23,27 @@ export default function Login() {
     try {
       const res = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({ email, password })
       });
 
-      const data = await res.json();
+      // SAFE parsing (prevents HTML crash)
+      const text = await res.text();
+      let data;
+
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Server error: Invalid response");
+      }
 
       if (!res.ok) {
         throw new Error(data.message || "Login failed");
       }
 
-      // Save token
       localStorage.setItem("token", data.token);
-
-      // Navigate 
       navigate("/dashboard", { replace: true });
 
     } catch (err) {
@@ -51,7 +57,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-blue-500">
       <form
         onSubmit={handleLogin}
-        className="bg-yellow-100 p-8 rounded-xl shadow-lg w-full  max-w-sm"
+        className="bg-yellow-100 p-8 rounded-xl shadow-lg w-full max-w-sm"
       >
         <h2 className="text-2xl font-bold text-center mb-6">
           Admin Login
@@ -60,7 +66,7 @@ export default function Login() {
         <input
           type="email"
           required
-          className="w-full mb-4 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full mb-4 p-3 border rounded-lg"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -69,7 +75,7 @@ export default function Login() {
         <input
           type="password"
           required
-          className="w-full mb-6 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full mb-6 p-3 border rounded-lg"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -77,20 +83,19 @@ export default function Login() {
 
         <button
           disabled={loading}
-          className={`w-full py-3 rounded-lg font-semibold transition ${
+          className={`w-full py-3 rounded-lg font-semibold ${
             loading
-              ? "bg-gray-400 cursor-not-allowed"
+              ? "bg-gray-400"
               : "bg-blue-600 text-white hover:bg-blue-700"
           }`}
         >
           {loading ? "Logging in..." : "Login"}
         </button>
-        
-        <div className="text-center">
-        <br/>
-        <p>Use Credentails for Demo  :   </p>
-        <p >Email : admin1@gmail.com</p>
-        <p>Password : Admin@123</p>
+
+        <div className="text-center mt-4 text-sm">
+          <p>Demo Credentials:</p>
+          <p>Email: admin1@gmail.com</p>
+          <p>Password: Admin@123</p>
         </div>
       </form>
     </div>
