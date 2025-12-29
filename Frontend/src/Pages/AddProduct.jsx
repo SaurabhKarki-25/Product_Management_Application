@@ -62,7 +62,7 @@ export default function AddProduct() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-     =
+     
       <div className="bg-white p-8 rounded-2xl shadow">
         <h2 className="text-2xl font-bold mb-6">Add Product</h2>
 

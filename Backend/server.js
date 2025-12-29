@@ -7,13 +7,18 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_URL
+];
+
 // Connect MongoDB
 connectDB();
 
 // ✅ CORS CONFIG
 app.use(
   cors({
-    origin: "http://localhost:5173", // React (Vite) frontend
+    origin: allowedOrigins, // React (Vite) frontend
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
