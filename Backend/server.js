@@ -7,26 +7,17 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  process.env.CLIENT_URL
-];
-
-// Connect MongoDB
+// Connect DB (non-blocking)
 connectDB();
 
-// ✅ CORS CONFIG
+app.use(express.json());
+
 app.use(
   cors({
-    origin: allowedOrigins, // React (Vite) frontend
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: [process.env.CLIENT_URL],
     credentials: true
   })
 );
-
-// Middleware
-app.use(express.json());
 
 // Routes
 app.use("/api/auth", require("./routes/AuthRoute"));
@@ -38,10 +29,7 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "OK" });
 });
 
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
-
-module.exports = app;
