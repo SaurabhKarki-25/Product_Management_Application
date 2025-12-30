@@ -34,14 +34,17 @@ export default function Products() {
       <table className="w-full bg-white rounded shadow">
         <thead className="bg-gray-200">
   <tr>
-    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+    <th className="px-6 py-4  text-sm font-semibold text-gray-700">
       Brand
     </th>
-    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+    <th className="px-6 py-4  text-sm font-semibold text-gray-700">
       Item
     </th>
-    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+    <th className="px-6 py-4  text-sm font-semibold text-gray-700">
       Price
+    </th>
+    <th className="px-6 py-4  text-sm font-semibold text-gray-700">
+      No of stocks
     </th>
     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-40">
       Actions
@@ -53,7 +56,7 @@ export default function Products() {
          {products.map((p) => (
   <tr
     key={p._id}
-    className="border-b  hover:bg-gray-50 transition-colors"
+    className="border-b text-center hover:bg-gray-50 transition-colors"
   >
     <td className="px-4 py-3 font-medium text-gray-800">
       {p.Brand_Name}
@@ -65,6 +68,9 @@ export default function Products() {
 
     <td className="px-4 py-3 font-semibold text-gray-900">
       ₹{p.price}
+    </td>
+    <td className="px-4 py-3 font-semibold text-gray-900">
+      {p.stock}
     </td>
 
     <td className="px-4 py-3">
